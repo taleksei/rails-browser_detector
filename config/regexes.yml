@@ -1,0 +1,59 @@
+# This file is light version of regexes.yaml from https://github.com/ua-parser/uap-core
+
+user_agent_parsers:
+  #### SPECIAL CASES TOP ####
+
+  # Opera will stop at 9.80 and hide the real version in the Version string.
+  # see: http://dev.opera.com/articles/view/opera-ua-string-changes/
+  - regex: '(Opera)/9.80.*Version/(\d+)\.(\d+)(?:\.(\d+))?'
+
+  # Opera >=15 for Desktop is similar to Chrome but includes an "OPR" Version string.
+  - regex: '(?:Chrome).*(OPR)/(\d+)\.(\d+)\.(\d+)'
+    family_replacement: 'Opera'
+
+  # Yandex Browser
+  - regex: '(YaBrowser)/(\d+)\.(\d+)\.(\d+)'
+    family_replacement: 'Yandex Browser'
+  #### END SPECIAL CASES TOP ####
+
+  #### MAIN CASES - this catches > 50% of all browsers ####
+
+  # Edge/major_version.minor_version
+  - regex: '(Edge)/(\d+)\.(\d+)'
+
+  # Chrome/Chromium/major_version.minor_version.beta_version
+  - regex: '(Chromium|Chrome)/(\d+)\.(\d+)\.(\d+)'
+
+  # Browser/major_version.minor_version
+  - regex: '(Chrome|Opera)/(\d+)\.(\d+)\.?(\d+)?'
+
+  # Chrome/Chromium/major_version.minor_version
+  - regex: '(Chromium|Chrome)/(\d+)\.(\d+)'
+
+  # Browser major_version.minor_version (space instead of slash)
+  - regex: '(Opera) (\d+)\.(\d+)\.?(\d+)?'
+
+  #### END MAIN CASES ####
+
+  #### SPECIAL CASES ####
+  # Safari
+  - regex: '(Version)/(\d+)\.(\d+)(?:\.(\d+))?.*Safari/'
+    family_replacement: 'Safari'
+  # Safari didn't provide "Version/d.d.d" prior to 3.0
+  - regex: '(Safari)/\d+'
+
+  # AFTER THE EDGE CASES ABOVE!
+  # AFTER IE11
+  # BEFORE all other IE
+  - regex: '(Firefox)/(\d+)\.(\d+)\.(\d+)'
+  - regex: '(Firefox)/(\d+)\.(\d+)(pre|[ab]\d+[a-z]*)?'
+
+  - regex: '([MS]?IE) (\d+)\.(\d+)'
+    family_replacement: 'IE'
+
+os_parsers:
+  - regex: 'Must be at least one regular expression'
+
+device_parsers:
+  - regex: 'Must be at least one regular expression'
+
