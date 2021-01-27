@@ -1,3 +1,4 @@
+require 'rails'
 require 'rails/browser_detector/version'
 require 'rails/browser_detector/engine'
 
