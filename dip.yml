@@ -1,0 +1,51 @@
+version: '1'
+
+environment:
+  DOCKER_RUBY_VERSION: 2.2
+  COMPOSE_FILE_EXT: development
+  RUBY_IMAGE_TAG: 2.2-latest
+  POSTGRES_DB: docker
+  RAILS_ENV: test
+  POSTGRES_IMAGE_TAG: 9.6-latest
+  APRESS_GEMS_CREDENTIALS: ""
+  COVERAGE: ""
+
+compose:
+  files:
+    - docker-compose.yml
+    - docker-compose.${COMPOSE_FILE_EXT}.yml
+
+interaction:
+  sh:
+    service: app
+
+  irb:
+    service: app
+    command: irb
+
+  bundle:
+    service: app
+    command: bundle
+
+  rake:
+    service: app
+    command: bundle exec rake
+
+  appraisal:
+    service: app
+    command: bundle exec appraisal
+
+  rspec:
+    service: app
+    command: bundle exec appraisal bundle exec rspec
+
+  clean:
+    service: app
+    command: rm -rf Gemfile.lock gemfiles/
+
+provision:
+  - docker volume create --name bundler_data
+  - dip clean
+  - dip bundle config --local https://gems.railsc.ru/ ${APRESS_GEMS_CREDENTIALS}
+  - dip bundle install
+  - dip appraisal install
