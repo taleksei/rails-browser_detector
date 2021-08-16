@@ -1,6 +1,7 @@
 # coding: utf-8
 require 'bundler/setup'
 require 'rails/browser_detector'
+require 'pry-byebug'
 
 require 'simplecov'
 SimpleCov.start do
