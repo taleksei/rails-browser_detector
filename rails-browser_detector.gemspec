@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'appraisal', '>= 1.0.2'
   spec.add_development_dependency 'combustion'
   spec.add_development_dependency 'simplecov', '>= 0.10.0'
+  spec.add_development_dependency 'pry-byebug'
 end
