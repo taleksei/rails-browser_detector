@@ -34,6 +34,11 @@ module Rails
         return @apple_device if defined? @apple_device
 
         @apple_device = current_browser.device.brand == APPLE_BRAND_NAME
+
+        logger = Logger.new("#{Rails.root}/log/user_agents.log")
+        logger.info("user_agent=#{request.user_agent}--brand=#{current_browser.device.brand}--apple_device?=#{@apple_device}")
+
+        @apple_device
       end
     end
   end
