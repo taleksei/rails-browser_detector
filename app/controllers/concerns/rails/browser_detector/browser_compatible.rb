@@ -14,6 +14,7 @@ module Rails
       included do
         helper_method :browser_old?
         helper_method :apple_device?
+        helper_method :win_xp?
       end
 
       protected
