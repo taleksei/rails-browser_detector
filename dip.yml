@@ -1,9 +1,9 @@
 version: '1'
 
 environment:
-  DOCKER_RUBY_VERSION: 2.2
+  DOCKER_RUBY_VERSION: 2.4
+  RUBY_IMAGE_TAG: 2.4-latest
   COMPOSE_FILE_EXT: development
-  RUBY_IMAGE_TAG: 2.2-latest
   POSTGRES_DB: docker
   RAILS_ENV: test
   POSTGRES_IMAGE_TAG: 9.6-latest
