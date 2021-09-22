@@ -9,6 +9,7 @@ RSpec.describe Rails::BrowserDetector::BrowserCompatible do
       'Yandex Browser' => 13,
       'Opera'          => 32,
       'Firefox'        => 42,
+      'Firefox Alpha'  => 15,
       'IE'             => 10,
       'Safari'         => 7
     }
@@ -225,6 +226,115 @@ RSpec.describe Rails::BrowserDetector::BrowserCompatible do
 
       it { expect(controller.send(:current_browser).family).to eq 'Other' }
       it { expect(controller.send(:current_browser).version).to be_nil }
+    end
+  end
+
+  describe '#apple_device?' do
+    let(:result) { controller.send(:apple_device?) }
+
+    before { allow(controller).to receive_message_chain(:request, :user_agent).and_return user_agent }
+
+    context 'when user agent for mobile device' do
+      let(:user_agent) do
+        'Mozilla/5.0 (Linux; Android 4.2.2; en-us; SAMSUNG SGH-M919 Build/JDQ39) ' \
+        'AppleWebKit/535.19 (KHTML, like Gecko) Version/1.0 Chrome/18.0.1025.308 Mobile Safari/535.19'
+      end
+
+      it { expect(result).to eq false }
+    end
+
+    context 'when user agent for android device' do
+      let(:user_agent) do
+        'Mozilla/5.0 (Linux; U; Android 4.1.2; en-us; SM-T210R Build/JZO54K) ' \
+        'AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30'
+      end
+
+      it { expect(result).to eq false }
+    end
+
+    context 'when user agent for iphone' do
+      let(:user_agent) do
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) ' \
+        'AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4'
+      end
+
+      it { expect(result).to eq true }
+    end
+
+    context 'when user agent for ipad' do
+      let(:user_agent) do
+        'Mozilla/5.0 (iPad; CPU OS 10_2_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko)' \
+        ' GSA/23.1.148956103 Mobile/14D27 Safari/600.1.4'
+      end
+
+      it { expect(result).to eq true }
+    end
+
+    context 'when user agent for desktop' do
+      let(:user_agent) do
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+      end
+
+      it { expect(result).to eq false }
+    end
+  end
+
+  describe '#win_xp?' do
+    let(:result) { controller.send(:win_xp?) }
+
+    before { allow(controller).to receive_message_chain(:request, :user_agent).and_return user_agent }
+
+    context 'when user agent for mobile device' do
+      let(:user_agent) do
+        'Mozilla/5.0 (Linux; Android 4.2.2; en-us; SAMSUNG SGH-M919 Build/JDQ39) ' \
+        'AppleWebKit/535.19 (KHTML, like Gecko) Version/1.0 Chrome/18.0.1025.308 Mobile Safari/535.19'
+      end
+
+      it { expect(result).to eq false }
+    end
+
+    context 'when user agent for android device' do
+      let(:user_agent) do
+        'Mozilla/5.0 (Linux; U; Android 4.1.2; en-us; SM-T210R Build/JZO54K) ' \
+        'AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30'
+      end
+
+      it { expect(result).to eq false }
+    end
+
+    context 'when user agent for iphone' do
+      let(:user_agent) do
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0_2 like Mac OS X) ' \
+        'AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4'
+      end
+
+      it { expect(result).to eq false }
+    end
+
+    context 'when user agent for ipad' do
+      let(:user_agent) do
+        'Mozilla/5.0 (iPad; CPU OS 10_2_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko)' \
+        ' GSA/23.1.148956103 Mobile/14D27 Safari/600.1.4'
+      end
+
+      it { expect(result).to eq false }
+    end
+
+    context 'when user agent for desktop' do
+      let(:user_agent) do
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+      end
+
+      it { expect(result).to eq false }
+    end
+
+    context 'when user agent for windows xp' do
+      let(:user_agent) do
+        'User-Agent:Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) ' \
+        'Chrome/49.0.2623.112 Safari/537.36'
+      end
+
+      it { expect(result).to eq true }
     end
   end
 end
